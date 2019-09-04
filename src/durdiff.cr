@@ -9,6 +9,7 @@ end
 
 module Durdiff
   class_property show_all : Bool = false
+  class_property expand_paths : Bool = false
 
   def self.expand(dirname : String) : String
     dirname
@@ -40,11 +41,16 @@ module Durdiff
       exit 1
     end
 
-    left = Durdiff.expand(left)
-    right = Durdiff.expand(right)
+    eleft = Durdiff.expand(left)
+    eright = Durdiff.expand(right)
 
-    left_list = Durdiff.list(left)
-    right_list = Durdiff.list(right)
+    left_list = Durdiff.list(eleft)
+    right_list = Durdiff.list(eright)
+
+    if Durdiff.expand_paths
+      left = eleft
+      right = eright
+    end
 
     {
       DirAndEntries.new(left, left_list),
