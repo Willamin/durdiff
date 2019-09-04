@@ -19,10 +19,38 @@ parser.parse!
 
 left, right = Durdiff.get_lists
 
+left_set = Set.new(left.entries)
+right_set = Set.new(right.entries)
+joint = Set.new(left.entries + right.entries)
+
+sorted_left =
+  joint
+    .to_a
+    .sort
+    .map do |x|
+      if left_set.includes?(x)
+        x
+      else
+        ""
+      end
+    end
+
+sorted_right =
+  joint
+    .to_a
+    .sort
+    .map do |x|
+      if right_set.includes?(x)
+        x
+      else
+        ""
+      end
+    end
+
 box = Durdiff::Box::QuadBox.new(
   left.path,
   right.path,
-  left.entries.join("\n"),
-  right.entries.join("\n")
+  sorted_left.join("\n"),
+  sorted_right.join("\n")
 )
 box.draw(STDOUT)
