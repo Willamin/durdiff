@@ -12,13 +12,7 @@ crystal: 0.28.0
 
 license: MIT
 
-development_dependencies:
-  microtest:
-    github: ragmaanir/microtest
-    # version: ~> 1.2.0
+dependencies:
+  stdimp:
+    github: willamin/stdimp
     branch: master
-
-# dependencies:
-#   name:
-#     github: user/name
-#     version: ~> 1.0.0
