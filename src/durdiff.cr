@@ -1,3 +1,5 @@
+require "digest/md5"
+
 require "stdimp/string/puts"
 
 require "./extensions"
@@ -10,6 +12,8 @@ end
 module Durdiff
   class_property show_all : Bool = false
   class_property expand_paths : Bool = false
+  class_property compute_digest : Bool = true
+  class_property full_digest : Bool = false
 
   def self.expand(dirname : String) : String
     dirname
@@ -52,9 +56,39 @@ module Durdiff
       right = eright
     end
 
+    if Durdiff.compute_digest
+      left_list = left_list.map { |e| "%s %s" % {e, Durdiff.short_hash(eleft + "/" + e)} }
+      right_list = right_list.map { |e| "%s %s" % {e, Durdiff.short_hash(eright + "/" + e)} }
+    end
+
     {
       DirAndEntries.new(left, left_list),
       DirAndEntries.new(right, right_list),
     }
+  end
+
+  def self.short_hash(filename : String) : String
+    unless File.file?(filename)
+      return ""
+    end
+
+    io = File.new(filename)
+    size = File.size(filename)
+
+    digest = Digest::MD5.hexdigest do |ctx|
+      size.times do
+        slice = Bytes.new(1)
+        io.read(slice)
+        ctx.update(slice)
+      end
+    end
+
+    return digest if Durdiff.full_digest
+
+    digest
+      .chars
+      .first(6)
+      .join
+      .tap { |d| "(%s)" % d }
   end
 end

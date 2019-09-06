@@ -9,6 +9,8 @@ parser = OptionParser.new do |parser|
 
   parser.on("-a", "--all", "include hidden files") { Durdiff.show_all = true }
   parser.on("-e", "--expand", "show expanded paths") { Durdiff.expand_paths = true }
+  parser.on("-D", "--no-digest", "don't compute a digest") { Durdiff.compute_digest = false }
+  parser.on("-f", "--full-digest", "display (and compare) the full digest") { Durdiff.full_digest = true }
 
   parser.unknown_args { |args| ARGV.replace(args) }
 end
