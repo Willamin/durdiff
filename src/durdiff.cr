@@ -12,7 +12,7 @@ end
 module Durdiff
   class_property show_all : Bool = false
   class_property expand_paths : Bool = false
-  class_property compute_digest : Bool = true
+  class_property compute_digest : Bool = false
   class_property full_digest : Bool = false
 
   def self.expand(dirname : String) : String
